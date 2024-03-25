@@ -1,35 +1,10 @@
-<script setup lang="ts">
-import { onMounted, provide, reactive } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-
-const data = reactive({
-    HelloWorldTwo: {},
-});
-setTimeout(() => {
-    data.HelloWorldTwo = defineAsyncComponent(
-        () => import("./components/HelloWorld.vue")
-    );
-}, 2000);
-provide("abc", "App.vue");
-
-type IObj = {
-    name: string;
-    address: string;
-    age: string;
-};
-
-const obj: IObj = {};
-
-const handleFromSon = () => {
-    console.log("handleFromSon");
-};
-
-
-</script>
-
 <template>
-管理系统
+    <router-view></router-view>
 </template>
+
+<script setup lang="ts">
+onMounted(() => {})
+</script>
 
 <style scoped lang='less'>
 @import "@/assets/css/common.less";
