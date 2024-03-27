@@ -1,14 +1,7 @@
 <template>
     <router-view></router-view>
 </template>
-
-<script setup lang="ts">
-onMounted(() => {})
-</script>
-
 <style scoped lang='less'>
-@import "@/assets/css/common.less";
-
 .logo {
     height: 6em;
     padding: 1.5em;
@@ -23,7 +16,7 @@ onMounted(() => {})
 }
 .main {
     .box {
-        color: @primary-red;
+        // color: @primary-red;
     }
 }
 </style>
