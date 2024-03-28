@@ -12,7 +12,13 @@
 
 <script setup lang='ts'>
 import AllBook from './components/AllBook.vue'
+import { getList } from '@/request/api'
 
+
+onMounted(async () => {
+    const list = await getList()
+    console.log('list', list)
+})
 </script>
 
 <style scoped lang='less'>

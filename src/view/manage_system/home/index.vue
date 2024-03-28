@@ -2,7 +2,7 @@
     <el-col :span="3">
         <el-menu
             :uniqueOpened="true"
-            default-active="2"
+            :default-active="homePagesActive"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
@@ -11,31 +11,31 @@
             active-text-color="#03a9f4"
         >
             <el-menu-item index="homePages">
-                <i class="el-icon-menu"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>系统首页</template>
             </el-menu-item>
             <el-menu-item index="book">
-                <i class="el-icon-document"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>图书管理</template>
             </el-menu-item>
             <el-menu-item index="cate">
-                <i class="el-icon-setting"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>分类管理</template>
             </el-menu-item>
             <el-menu-item index="lookBook">
-                <i class="el-icon-setting"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>借阅管理</template>
             </el-menu-item>
             <el-menu-item index="conso">
-                <i class="el-icon-setting"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>系统日志管理</template>
             </el-menu-item>
             <el-menu-item index="user">
-                <i class="el-icon-setting"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>用户管理</template>
             </el-menu-item>
             <el-menu-item index="role">
-                <i class="el-icon-setting"></i>
+                <el-icon><Notebook /></el-icon>
                 <template #title>角色管理</template>
             </el-menu-item>
         </el-menu>
@@ -46,9 +46,18 @@
 </template>
 
 <script setup lang='ts'>
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
+console.log('route', route);
+
+// 属性页面时候的路由监控
+router.push({
+    name: route.path.split('/')[1]
+})
+
+const homePagesActive = ref('homePages')
 
 // 点击菜单的回调
 const handleOpen: (e: Event) => void = (e: string): void => {

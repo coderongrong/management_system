@@ -10,10 +10,11 @@ export const routes: any = [
     {
         path: '/home',
         name: 'home',
+        redirect: '/homePages',
         component: () => import('@/view/manage_system/home/index.vue'),
         children: [
             {
-                path: '/home',
+                path: '/homePages',
                 name: 'homePages',
                 component: () => import('@/view/manage_system/home/pages/FPages/index.vue'),
             },
