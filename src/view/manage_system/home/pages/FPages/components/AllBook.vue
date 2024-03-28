@@ -256,6 +256,8 @@
 <script setup lang='ts'>
 import { getAddList, getList } from '@/request/api'
 import type { FormInstance, FormRules } from "element-plus";
+import { regionData } from 'element-china-area-data'
+
 interface IForm {
     bookType: string;
     name: string;
