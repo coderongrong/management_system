@@ -254,9 +254,10 @@
 </template>
 
 <script setup lang='ts'>
-import { getAddList, getList } from '@/request/api'
+import { getAddList, getList } from "@/request/api";
 import type { FormInstance, FormRules } from "element-plus";
-import { regionData } from 'element-china-area-data'
+import { regionData } from "element-china-area-data";
+import { ElMessage } from "element-plus";
 
 interface IForm {
     bookType: string;
@@ -264,6 +265,7 @@ interface IForm {
     autor: string;
     lang: string;
 }
+
 const ruleFormRef = ref<FormInstance>();
 const input = ref("");
 const value = ref("");
@@ -334,22 +336,17 @@ const rules = reactive<FormRules<typeof ruleForm>>({
     ],
 });
 
+const books = reactive([ref('Vue 3 Guide')])
+// 这里需要 .value
+console.log(books[0])
 
 // mounted
 onMounted(async () => {
-    getListData()
-})
+    getListData();
+});
 
 const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.validate((valid) => {
-        if (valid) {
-            console.log("submit!", toRaw(ruleForm));
-        } else {
-            console.log("error submit!");
-            return false;
-        }
-    });
+    console.log('formEl', formEl);
 };
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -358,32 +355,41 @@ const resetForm = (formEl: FormInstance | undefined) => {
 };
 
 // table 表格
-const tableData = ref([])
+const tableData = ref([]);
 //详情
 const handleClick = () => {};
 
 const handleCancel = () => {
-    formModel.value = {}
-    dialogFormVisible.value = false
-}
+    formModel.value = {};
+    dialogFormVisible.value = false;
+};
 
 const getListData = async () => {
     const res = await getList({
         page: 1,
         size: 10,
-        ...toRaw(ruleForm)
-    })
-    console.log('res ----> list', res);
-    tableData.value = res
-}
+        ...toRaw(ruleForm),
+    });
+    tableData.value = res;
+};
 
 const handleOk = async () => {
-    const res = await getAddList(toRaw(formModel.value))
-    dialogFormVisible.value = false
-    formModel.value = {}
-    getListData()
-}
-
+    const res = await getAddList(toRaw(formModel.value));
+    if (res.code == 200) {
+        ElMessage({
+            message: "创建成功",
+            type: "success",
+        });
+        formModel.value = {};
+        getListData();
+    } else {
+        ElMessage({
+            message: "创建失败",
+            type: 'error'
+        });
+    }
+    dialogFormVisible.value = false;
+};
 </script>
 
 <style scoped lang='less'>

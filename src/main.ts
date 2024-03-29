@@ -21,3 +21,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 app.mount('#app')
+
+
+
+
+// useName: https://120.26.217.111:18660/08f8e7b8  use: 2oihtm7r  pw: Rqw123456 

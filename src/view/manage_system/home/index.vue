@@ -50,7 +50,6 @@ import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
-console.log('route', route);
 
 // 属性页面时候的路由监控
 router.push({
