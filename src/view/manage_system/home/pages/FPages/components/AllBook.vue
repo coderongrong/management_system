@@ -213,7 +213,7 @@
         label="简介"
       />
       <el-table-column
-        prop="name"
+        prop="create_time"
         label="创建时间"
       />
       <el-table-column
