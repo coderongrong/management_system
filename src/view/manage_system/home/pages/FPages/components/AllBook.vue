@@ -83,7 +83,7 @@
         :label-width="formLabelWidth"
       >
         <el-input
-          v-model="formModel.book_name"
+          v-model="formModel.bookName"
           autocomplete="off"
         />
       </el-form-item>
@@ -336,10 +336,6 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   ]
 })
 
-const books = reactive([ref('Vue 3 Guide')])
-// 这里需要 .value
-console.log(books[0])
-
 // mounted
 onMounted(async () => {
   getListData()
@@ -371,8 +367,9 @@ const getListData = async () => {
       size: 10,
       ...toRaw(ruleForm)
     })
-    console.log('res', res)
-    tableData.value = res
+    if (typeof res == 'object') {
+      tableData.value = res
+    }
   } catch (e) {
     console.log('e', e)
   }
@@ -380,7 +377,7 @@ const getListData = async () => {
 
 const handleOk = async () => {
   const res: any = await getAddList(toRaw(formModel.value))
-  if (res.code == 200) {
+  if (res == '书籍添加成功！') {
     ElMessage({
       message: '创建成功',
       type: 'success'

@@ -12,6 +12,6 @@ export const getAddList = params => {
     return request({
         method: 'post',
         url: 'add',
-        params
+        data: params
     })
 }
