@@ -1,15 +1,7 @@
 <template>
   <el-col :span="3">
-    <el-menu
-      :uniqueOpened="true"
-      :default-active="homePagesActive"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#03a9f4"
-    >
+    <el-menu :uniqueOpened="true" default-active="homePages" class="el-menu-vertical-demo" @open="handleOpen"
+      @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#03a9f4">
       <el-menu-item index="homePages">
         <el-icon>
           <Notebook />
@@ -70,17 +62,19 @@ router.push({
   name: route.path.split('/')[1]
 })
 
-const homePagesActive = ref('homePages')
+// interface MyObject {
+//   (): void;
+// }
 
 // 点击菜单的回调
-const handleOpen: (e: string) => void = (e: string): void => {
+const handleOpen = (event: any): void => {
   router.push({
-    name: e
+    name: event
   })
 }
 
-const handleClose: (e: string) => void = (e: string): void => {
-  console.log(e)
+const handleClose = (event: any): void => {
+  console.log(event)
 }
 </script>
 
@@ -88,6 +82,7 @@ const handleClose: (e: string) => void = (e: string): void => {
 .el-col {
   height: 100%;
 }
+
 .el-menu {
   height: 100%;
 }
