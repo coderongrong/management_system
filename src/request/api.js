@@ -3,7 +3,7 @@ import { request } from './index'
 export const getList = params => {
     return request({
         method: 'get',
-        url: 'list',
+        url: '/api/look/list',
         params
     })
 }
