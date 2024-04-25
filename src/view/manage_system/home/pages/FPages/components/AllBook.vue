@@ -1,10 +1,21 @@
 <template>
-  <el-form ref="ruleFormRef" style="max-width: 100%" :model="ruleForm" status-icon :rules="rules" label-width="auto"
-    class="demo-ruleForm">
+  <el-form
+    ref="ruleFormRef"
+    style="max-width: 100%"
+    :model="ruleForm"
+    status-icon
+    :rules="rules"
+    label-width="auto"
+    class="demo-ruleForm"
+  >
     <el-row :gutter="20">
       <el-col :span="4">
         <el-form-item label="图书分类" prop="bookType">
-          <el-select v-model="ruleForm.bookType" autocomplete="off" placeholder="请选择">
+          <el-select
+            v-model="ruleForm.bookType"
+            autocomplete="off"
+            placeholder="请选择"
+          >
             <el-option label="Zone one" value="shanghai" />
             <el-option label="Zone two" value="beijing" />
           </el-select>
@@ -28,7 +39,9 @@
 
       <el-col :span="4">
         <el-form-item>
-          <el-button type="primary" @click="submitForm(ruleFormRef)">查询</el-button>
+          <el-button type="primary" @click="submitForm(ruleFormRef)"
+            >查询</el-button
+          >
           <el-button @click="dialogFormVisible = true">创建</el-button>
         </el-form-item>
       </el-col>
@@ -87,7 +100,9 @@
       <el-table-column prop="book_class_id" label="分类名称" />
       <el-table-column prop="name" label="分类名称" width="180">
         <template #default>
-          <el-button link type="primary" size="small" @click="handleClick">详情</el-button>
+          <el-button link type="primary" size="small" @click="handleClick"
+            >详情</el-button
+          >
           <el-button link type="primary" size="small">借阅</el-button>
           <el-button link type="primary" size="small">编辑</el-button>
           <el-button link type="primary" size="small">删除</el-button>
@@ -109,6 +124,19 @@ interface IForm {
   autor: string
   lang: string
 }
+interface IFormModel {
+  bookType: string
+  bookName: string
+  author: string
+  publish: string
+  language: string
+  price: string
+  stock: string
+  introduction: string
+  publish_time: string
+  book_class_id: string
+  value?: any
+}
 
 const ruleFormRef = ref<FormInstance>()
 const dialogFormVisible = ref<boolean>(false)
@@ -121,7 +149,7 @@ const ruleForm = reactive<IForm>({
   lang: ''
 })
 
-const formModel = ref({})
+const formModel: IFormModel = ref({})
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   bookType: [
@@ -171,7 +199,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 // table 表格
 const tableData: any = ref([])
 //详情
-const handleClick = () => { }
+const handleClick = () => {}
 
 const handleCancel = () => {
   formModel.value = {}
