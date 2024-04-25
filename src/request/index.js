@@ -4,7 +4,7 @@ function request(config) {
 
     const instance = axios.create({
         // http://42.192.39.253:8085/book/add
-        baseURL: 'http://42.192.39.253:8085/book',
+        baseURL: 'http://42.192.39.253:8085',
         // timeout: 10000
     })
 

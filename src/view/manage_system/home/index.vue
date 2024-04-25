@@ -1,7 +1,15 @@
 <template>
   <el-col :span="3">
-    <el-menu :uniqueOpened="true" default-active="homePages" class="el-menu-vertical-demo" @open="handleOpen"
-      @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#03a9f4">
+    <el-menu
+      :uniqueOpened="true"
+      :default-active="currentRoute"
+      class="el-menu-vertical-demo"
+      @open="handleOpen"
+      @close="handleClose"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#03a9f4"
+    >
       <el-menu-item index="homePages">
         <el-icon>
           <Notebook />
@@ -57,21 +65,17 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
-// 属性页面时候的路由监控
-router.push({
-  name: route.path.split('/')[1]
-})
-
-// interface MyObject {
-//   (): void;
-// }
-
+const currentRoute = ref('honePages')
 // 点击菜单的回调
 const handleOpen = (event: any): void => {
   router.push({
     name: event
   })
 }
+
+onMounted(()=>{
+  currentRoute.value = route.path.split('/')[1]
+})
 
 const handleClose = (event: any): void => {
   console.log(event)

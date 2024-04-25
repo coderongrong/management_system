@@ -446,16 +446,6 @@ interface PersonT {
   type IsCityKey = CheckKey<Person, 'city'>; // Result: false
 
 
-
-
-
-
-
-
-
-
-
-
 // 链式调用
 // type FChain = () => any
 // function chain<FChain>(x: number): any {

@@ -155,25 +155,24 @@ export default defineConfig(async ({ command, mode, ssrBuild }) => {
         watch: {},
       },
       sourcemap: true,
-      // server: {
-      //   open: false,
-      //   port: 9000,
-      //   proxy: {
-      //     '/goods': {
-      //       target: 'http://42.192.39.253:8083',
-      //       changeOrigin: true, //是否跨域
-      //       rewrite: (path) => path.replace(/^\/goods/, ''),
-      //     },
-      //     '/sys': {
-      //       target: 'http://192.168.1.222:1008/jeecg-boot', // 智友本地
-      //       changeOrigin: true, //是否跨域
-      //       rewrite: (path) => path.replace(/^\/sys/, '/sys'),
-      //     },
-      //   },
-      // },
+      server: {
+        open: false,
+        port: 9000,
+        proxy: {
+          '/api': {
+            target: 'http://42.192.39.253:8085',
+            changeOrigin: true, //是否跨域
+            rewrite: (path) => path.replace(/api/, '/'),
+          },
+          '/sys': {
+            target: 'http://192.168.1.222:1008/jeecg-boot', // 智友本地
+            changeOrigin: true, //是否跨域
+            rewrite: (path) => path.replace(/^\/sys/, '/sys'),
+          },
+        },
+      },
     }
   } else {
-    console.log('----------------> build')
     return {
       // external: {
       //   vue: 'Vue',
