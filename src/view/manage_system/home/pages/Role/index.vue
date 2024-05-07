@@ -30,7 +30,10 @@ const { roles } = storeToRefs(store)
 
 provide('key', ref(10000))
 
-h('div', { class: 'bar', innerHTML: 'hello' })
+const state =  reactive({name: 1})
+
+// console.log(state, toRaw(state), state['__v_raw'])
+
 </script>
 
 <style scoped lang='less'>

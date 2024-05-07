@@ -162,12 +162,12 @@ export default defineConfig(async ({ command, mode, ssrBuild }) => {
           '/api': {
             target: 'http://42.192.39.253:8085',
             changeOrigin: true, //是否跨域
-            rewrite: (path) => path.replace(/api/, '/'),
+            rewrite: (path: any) => path.replace(/api/, '/'),
           },
           '/sys': {
             target: 'http://192.168.1.222:1008/jeecg-boot', // 智友本地
             changeOrigin: true, //是否跨域
-            rewrite: (path) => path.replace(/^\/sys/, '/sys'),
+            rewrite: (path: any) => path.replace(/^\/sys/, '/sys'),
           },
         },
       },
