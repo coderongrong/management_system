@@ -2,10 +2,12 @@
   <AsyncComp>store</AsyncComp>
   <div>{{ roles }} --- {{ store.roles }}</div>
   <h4>provide inject</h4>
+  <render />
 </template>
 
 <script setup>
 import Hellow from './components/Hellow.vue'
+import render from './components/render'
 import { userRole } from '@/pinia'
 import { storeToRefs } from 'pinia'
 

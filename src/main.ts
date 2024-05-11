@@ -1,4 +1,4 @@
-import { createApp, h, inject, defineAsyncComponent } from 'vue'
+import { createApp, h, inject, defineAsyncComponent, Suspense } from 'vue'
 import { routes } from './router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 // import './style.css'
@@ -8,11 +8,14 @@ import App from './App.vue'
 
 import { createPinia } from 'pinia'
 
+// ElementPlus ui组件库
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
-import HellowWorld from './RenderComponents/HellowWorld.vue'
+// import HellowWorld from './RenderComponents/HellowWorld.vue'
+import Error from './RenderComponents/Error.vue'
+import Loading from './RenderComponents/Loading.vue'
 
 const router = createRouter({
   history: createWebHashHistory('/#/'),
@@ -32,12 +35,29 @@ router.beforeEach((to, from) => {
   }
 })
 
+const AsyncComp = defineAsyncComponent({
+  // 加载函数
+  loader: () => import('./RenderComponents/HellowWorld.vue'),
+
+  // 加载异步组件时使用的组件
+  loadingComponent: Loading,
+  // 展示加载组件前的延迟时间，默认为 200ms
+  delay: 2000,
+
+  // 加载失败后展示的组件
+  errorComponent: Error,
+  // 如果提供了一个 timeout 时间限制，并超时了
+  // 也会显示这里配置的报错组件，默认值是：Infinity
+  timeout: 3000
+})
+
 // const app = createApp({
 //   setup() {
-//     console.log(inject('message'))
+//     // console.log(inject('message'))
+//     console.log('Suspense', Suspense);
 //     return () => {
 //       // debugger
-//       return h('div', {}, ['asgdhagsdh', h(HellowWorld)])
+//       return h('div', {}, ['Suspense', h('div'), h(Suspense, {}, h(AsyncComp))])
 //     }
 //   }
 // }).use(ElementPlus)
