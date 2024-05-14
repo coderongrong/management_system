@@ -1,8 +1,9 @@
 <template>
-  <AsyncComp>store</AsyncComp>
+  <!-- <AsyncComp>store</AsyncComp> -->
+  <ElInput v-model='inputValue' placeholder="Please" clearable />
   <div>{{ roles }} --- {{ store.roles }}</div>
   <h4>provide inject</h4>
-  <render />
+  <render :info="{a: 1, b: 2}" />
 </template>
 
 <script setup>
@@ -33,7 +34,7 @@ const { roles } = storeToRefs(store)
 provide('key', ref(10000))
 
 const state =  reactive({name: 1})
-
+const inputValue = ref('1000')
 // console.log(state, toRaw(state), state['__v_raw'])
 
 </script>
