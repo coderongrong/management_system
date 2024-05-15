@@ -1,0 +1,122 @@
+$bc: #386ade; //001A57
+$tc: #ffffff;
+$s-tc: #d9e1ff;
+$main-color: #4cd964;
+.s-tc {
+  color: $s-tc !important;
+}
+@function transparentize($color, $alpha) {
+  $b-color: rgba($color, $alpha);
+  @return $b-color;
+}
+$color10: transparentize($bc, 0.1);
+$color90: transparentize($bc, 0.9);
+$color100: transparentize($bc, 1);
+// $color10: red;
+/* 底部按钮的颜色 */
+$btn-bc_color: #a8c9fd;
+$btn-t_color: #0052d9;
+
+@for $i from 1 to 10 {
+  .border-#{$i} {
+    border: #{$i}px solid blue !important;
+  }
+}
+$j: 20;
+@while $j > 0 {
+  .item-#{$j} {
+    border: #{$j}px solid blue !important;
+  }
+  $j: $j - 1;
+}
+@each $f in 1, 2, 3, 4, 5 {
+  .s-#{$f} {
+    border: #{$f}px solid blue !important;
+  }
+}
+.d-f {
+  display: flex;
+}
+
+.d-f-a {
+  display: flex;
+  justify-content: space-around;
+}
+
+.d-f-b {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.d-f-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.f-1 {
+  flex: 1;
+}
+.f-2 {
+  flex: 2;
+}
+.f-3 {
+  flex: 3;
+}
+.f-4 {
+  flex: 4;
+}
+.f-5 {
+  flex: 5;
+}
+
+.p-0-10 {
+  padding: 0 10rpx;
+}
+
+.p-0-20 {
+  padding: 0 20rpx;
+}
+
+.mt-10 {
+  margin-top: 10rpx;
+}
+.mt-20 {
+  margin-top: 20rpx;
+}
+.mt-30 {
+  margin-top: 30rpx;
+}
+.mt-40 {
+  margin-top: 40rpx;
+}
+.mt-100 {
+  margin-top: 100rpx;
+}
+
+.mb-10 {
+  margin-bottom: 10rpx;
+}
+.mb-20 {
+  margin-bottom: 20rpx;
+}
+.mb-30 {
+  margin-bottom: 30rpx;
+}
+.mb-40 {
+  margin-bottom: 40rpx;
+}
+.mb-100 {
+  margin-bottom: 100rpx;
+}
+
+.ml-20 {
+  margin-left: 20rpx;
+}
+.mf-10 {
+  left: 10rpx;
+}
+.mf-20 {
+  left: 20rpx;
+}

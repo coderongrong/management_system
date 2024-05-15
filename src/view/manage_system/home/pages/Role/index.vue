@@ -1,14 +1,17 @@
 <template>
   <!-- <AsyncComp>store</AsyncComp> -->
-  <ElInput v-model='inputValue' placeholder="Please" clearable />
+  <ElInput v-model="inputValue" placeholder="Please" clearable />
   <div>{{ roles }} --- {{ store.roles }}</div>
   <h4>provide inject</h4>
-  <render :info="{a: 1, b: 2}" />
+  <render :info="{ a: 1, b: 2 }" />
+
+  <child v-model="modelValue" />
 </template>
 
 <script setup>
 import Hellow from './components/Hellow.vue'
 import render from './components/render'
+import child from './components/input.vue'
 import { userRole } from '@/pinia'
 import { storeToRefs } from 'pinia'
 
@@ -28,16 +31,22 @@ const AsyncComp = defineAsyncComponent({
   timeout: 3000
 })
 
+const modelValue = ref('abc')
+watch(
+  modelValue,
+  (newvalue, oldval) => {
+    console.log('newVal', newvalue)
+  }
+)
+
 const store = userRole()
 const { roles } = storeToRefs(store)
 
 provide('key', ref(10000))
 
-const state =  reactive({name: 1})
+const state = reactive({ name: 1 })
 const inputValue = ref('1000')
 // console.log(state, toRaw(state), state['__v_raw'])
-
 </script>
 
-<style scoped lang='less'>
-</style>
+<style scoped lang="less"></style>
