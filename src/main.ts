@@ -9,7 +9,7 @@ import App from './App.vue'
 import { createPinia } from 'pinia'
 
 // ElementPlus ui组件库
-import ElementPlus from 'element-plus'
+import ElementPlus, { dividerProps } from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
@@ -51,20 +51,23 @@ const AsyncComp = defineAsyncComponent({
   timeout: 3000
 })
 
-// const app = createApp({
-//   setup() {
-//     // console.log(inject('message'))
-//     console.log('Suspense', Suspense);
-//     return () => {
-//       // debugger
-//       return h('div', {}, ['Suspense', h('div'), h(Suspense, {}, h(AsyncComp))])
-//     }
-//   }
-// }).use(ElementPlus)
-// app.provide('message', 'hello message')
+const app = createApp({
+  setup() {
+    // console.log(inject('message'))
+    console.log('Suspense', Suspense);
+    return () => {
+      return h('div',{}, 'setup')
+    }
+  },
+  render(){
+    return h('div',{}, 'render')
+  }
+}).use(ElementPlus)
+
+app.provide('message', 'hello message')
 
 
-const app = createApp(App).use(ElementPlus).use(router)
+// const app = createApp(App).use(ElementPlus).use(router)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

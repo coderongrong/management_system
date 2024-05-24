@@ -71,6 +71,32 @@ $j: 20;
   flex: 5;
 }
 
+@each $f in 10, 20, 30, 40, 50, 100 {
+  .p-0-#{$f} {
+    padding: 0 #{$f}rpx;
+  }
+  .mt-#{$f} {
+    margin-top: #{$f}rpx;
+  }
+  .mb-#{$f} {
+    margin-bottom: #{$f}rpx;
+  }
+  .ml-#{$f} {
+    margin-left: #{$f}rpx;
+  }
+  .mf-#{$f} {
+    left: #{$f}rpx;
+  }
+}
+
+$fd: 5;
+@while $fd > 0 {
+  .f-#{$fd} {
+    flex: #{$fd};
+  }
+  $fd: $fd - 1;
+}
+
 .p-0-10 {
   padding: 0 10rpx;
 }
