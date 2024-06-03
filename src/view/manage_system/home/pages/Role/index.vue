@@ -1,11 +1,6 @@
 <template>
   <!-- <AsyncComp>store</AsyncComp> -->
-  <ElInput v-model="inputValue" placeholder="Please" clearable />
   <div>{{ roles }} --- {{ store.roles }}</div>
-  <h4>provide inject</h4>
-  <render :info="{ a: 1, b: 2 }" />
-
-  <child v-model="modelValue" />
 </template>
 
 <script setup>
@@ -14,6 +9,7 @@ import render from './components/render'
 import child from './components/input.vue'
 import { userRole } from '@/pinia'
 import { storeToRefs } from 'pinia'
+import { request } from '@/request'
 
 const AsyncComp = defineAsyncComponent({
   // 加载函数
@@ -32,12 +28,18 @@ const AsyncComp = defineAsyncComponent({
 })
 
 const modelValue = ref('abc')
-watch(
-  modelValue,
-  (newvalue, oldval) => {
-    console.log('newVal', newvalue)
-  }
-)
+watch(modelValue, (newvalue, oldval) => {
+  console.log('newVal', newvalue)
+})
+onMounted(() => {
+  console.log(request)
+  request({
+    method: 'get',
+    url: '/home',
+  }).then(res => {
+    console.log('----------->', res)
+  })
+})
 
 const store = userRole()
 const { roles } = storeToRefs(store)

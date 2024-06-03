@@ -73,6 +73,9 @@ export default defineConfig(async ({ command, mode, ssrBuild }) => {
         jsxFactory: 'h',
         jsxFragment: 'Fragment',
       },
+      devServer: {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      },
       runtimeCompiler: true, // 加上这一段
       plugins: [
         vue(),
@@ -159,10 +162,18 @@ export default defineConfig(async ({ command, mode, ssrBuild }) => {
         open: false,
         port: 9000,
         proxy: {
+          // '/api': {
+          //   target: 'http://42.192.39.253:8085',
+          //   changeOrigin: true, //是否跨域
+          //   rewrite: (path: any) => path.replace(/^\/api/, '/'),
+          // },
           '/api': {
-            target: 'http://42.192.39.253:8085',
+            target: 'http://127.0.0.1:3000/',
             changeOrigin: true, //是否跨域
-            rewrite: (path: any) => path.replace(/api/, '/'),
+            rewrite: (path: any) => {
+              console.log('代理');
+              path.replace(/^\/api/, '/')
+            },
           },
           '/sys': {
             target: 'http://192.168.1.222:1008/jeecg-boot', // 智友本地

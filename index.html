@@ -10,7 +10,7 @@
 
 <body>
   <div id="app"></div>
-  <!-- <script type="module" src="/src/main.ts"></script> -->
+  <script type="module" src="/src/main.ts"></script>
   <script>
 
     var arr = [9, 10, 5, 7, 2, 8, 11]
@@ -86,7 +86,7 @@
     function greedyBoxPacking(boxCapacity, items) {
       let totalVolume = 0;
       items.sort((a, b) => b.volume - a.volume); // 按物品体积降序排序
-      console.log(items)
+      // console.log(items)
       for (let i = 0; i < items.length; i++) {
         if (boxCapacity - totalVolume >= items[i].volume) {
           totalVolume += items[i].volume;

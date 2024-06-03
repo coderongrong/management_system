@@ -51,23 +51,23 @@ const AsyncComp = defineAsyncComponent({
   timeout: 3000
 })
 
-const app = createApp({
-  setup() {
-    // console.log(inject('message'))
-    console.log('Suspense', Suspense);
-    return () => {
-      return h('div',{}, 'setup')
-    }
-  },
-  render(){
-    return h('div',{}, 'render')
-  }
-}).use(ElementPlus)
+// const app = createApp({
+//   setup() {
+//     // console.log(inject('message'))
+//     console.log('Suspense', Suspense);
+//     return () => {
+//       return h('div', {}, 'setup')
+//     }
+//   },
+//   render() {
+//     return h('div', {}, 'render')
+//   }
+// }).use(ElementPlus)
 
-app.provide('message', 'hello message')
+// app.provide('message', 'hello message')
 
 
-// const app = createApp(App).use(ElementPlus).use(router)
+const app = createApp(App).use(ElementPlus).use(router)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
@@ -77,6 +77,7 @@ const pinia = createPinia()
 
 app.use(pinia)
 app.mount('#app')
+
 
 
 // useName: https://120.26.217.111:18660/08f8e7b8  use: 2oihtm7r  pw: Rqw123456 
