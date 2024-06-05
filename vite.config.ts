@@ -8,9 +8,6 @@ import { consoles } from './plugins/console'
 // import legacy from '@vitejs/plugin-legacy'
 // import AutoImport from './loader/AutoImport';
 import AutoImport from 'unplugin-auto-import/vite'
-
-
-
 // https://vitejs.dev/config/
 // export default defineConfig({
 //   plugins: [vue(),

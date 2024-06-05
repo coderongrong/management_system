@@ -1,6 +1,7 @@
 <template>
-    <router-view></router-view>
+    <div>orginCode</div>
 </template>
+
 <style scoped lang='less'>
 .logo {
     height: 6em;
