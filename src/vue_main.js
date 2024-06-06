@@ -5340,7 +5340,7 @@ function createAppAPI(render2, hydrate2) {
           if (rootContainer.__vue_app__) {
             warn$1(
               `There is already an app instance mounted on the host container.
- If you want to mount another app on the same host container, you need to unmount the previous app by calling \`app.unmount()\` first.`
+                If you want to mount another app on the same host container, you need to unmount the previous app by calling \`app.unmount()\` first.`
             );
           }
           const vnode = createVNode(rootComponent, rootProps);
@@ -5375,7 +5375,7 @@ function createAppAPI(render2, hydrate2) {
         } else if (true) {
           warn$1(
             `App has already been mounted.
-If you want to remount the same app, move your app creation logic into a factory function and create fresh app instances for each mount - e.g. \`const createMyApp = () => createApp(App)\``
+              If you want to remount the same app, move your app creation logic into a factory function and create fresh app instances for each mount - e.g. \`const createMyApp = () => createApp(App)\``
           );
         }
       },
@@ -6769,6 +6769,7 @@ function baseCreateRenderer(options, createHydrationFns) {
         break;
       default:
         if (shapeFlag & 1) {
+          console.log(' shapeFlag & 1 ')
           processElement(
             n1,
             n2,
@@ -6781,6 +6782,7 @@ function baseCreateRenderer(options, createHydrationFns) {
             optimized
           );
         } else if (shapeFlag & 6) {
+          console.log(' shapeFlag & 6 ')
           processComponent(
             n1,
             n2,
@@ -8774,7 +8776,6 @@ function createCommentVNode(text = "", asBlock = false) {
   return asBlock ? (openBlock(), createBlock(Comment, null, text)) : createVNode(Comment, null, text);
 }
 function normalizeVNode(child) {
-  console.log("------------>core child", child);
   if (child == null || typeof child === "boolean") {
     return createVNode(Comment);
   } else if (isArray(child)) {
@@ -11075,7 +11076,6 @@ var hydrate = (...args) => {
   ensureHydrationRenderer().hydrate(...args);
 };
 var createApp = (...args) => {
-  console.log("createApp ----------->", args);
   const app = ensureRenderer().createApp(...args);
   if (true) {
     injectNativeTagCheck(app);
