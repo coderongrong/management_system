@@ -1,4 +1,4 @@
-import { reactive } from './vue_main'
+import { reactive, /* createApp */ } from './vue_main'
 import { createApp, h } from './vue_core'
 import App from './App.vue'
 
@@ -15,14 +15,26 @@ const component = {
     // console.log('ok', props, context)
     const state = reactive({ name: 'xxxxxxx', age: 18, show: true })
     setTimeout(() => {
-      state.name = 'yyyyyyyyyyyy'
-      state.age = 'yyyyyyyyyyyy'
+      // state.name = 'yyyyyyyyyyyy'
+      // state.age = '15'
+      state.show = false
     }, 1000)
     const fn = () => {
       console.log('fn')
     }
     return () => {
-      return state.show ? h('h1', { onClick: fn }, ['h1', 'zzzzzzzzz', state.name, state.age]) : h('p', { onClick: fn }, ['p', 'zzzzzzzzz', state.name, state.age])
+      return state.show
+        ? h('p', [
+          h('li', { key: 'a' }, 'a'),
+          h('li', { key: 'b' }, 'b'),
+          h('li', { key: 'c' }, 'c')
+        ])
+        : h('p', {}, [
+          h('li', { key: 'a' }, 'a'),
+          h('li', { key: 'b' }, 'b'),
+          h('li', { key: 'd' }, 'd'),
+          h('li', { key: 'e' }, 'e')
+        ])
     }
   },
   render(proxy) {

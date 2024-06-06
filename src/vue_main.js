@@ -6769,7 +6769,6 @@ function baseCreateRenderer(options, createHydrationFns) {
         break;
       default:
         if (shapeFlag & 1) {
-          console.log(' shapeFlag & 1 ')
           processElement(
             n1,
             n2,
@@ -6782,7 +6781,6 @@ function baseCreateRenderer(options, createHydrationFns) {
             optimized
           );
         } else if (shapeFlag & 6) {
-          console.log(' shapeFlag & 6 ')
           processComponent(
             n1,
             n2,

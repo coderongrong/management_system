@@ -23,7 +23,7 @@ var nodeOps = {
     parent.insertBefore(child, anchor || null);
   },
   remove: (child) => {
-    const parent = child.parentNode;
+    const parent = child?.parentNode;
     if (parent) {
       parent.removeChild(child);
     }
@@ -186,7 +186,6 @@ function patchStyle(el, prev, next) {
   }
 }
 function patchEvent(el, rawName, prevValue, nextValue, instance = null) {
-  console.log(el, rawName, prevValue, nextValue)
   el.addEventListener('click', nextValue, false)
   // const invokers = el[veiKey] || (el[veiKey] = {});
   // const existingInvoker = invokers[rawName];
@@ -203,33 +202,30 @@ function patchEvent(el, rawName, prevValue, nextValue, instance = null) {
   //   }
   // }
 }
-var patchProp = (el, key, prevValue, nextValue, namespace, prevChildren, parentComponent, parentSuspense, unmountChildren) => {
-  const isSVG = namespace === "svg";
+function patchAttr(el, key, value, isSVG, instance) {
+  console.log('2')
+  if (value == null || (!!value || value === "")) {
+    el.removeAttribute(key);
+  } else {
+    el.setAttribute(key, isBoolean2 ? "" : value);
+  }
+}
+var patchProp = (el, key, prevValue, nextValue) => {
   if (key === "class") {
-    patchClass(el, nextValue, isSVG);
+    patchClass(el, nextValue);
   } else if (key === "style") {
     // patchStyle(el, prevValue, nextValue);
   } else if (isOn(key)) {
     if (!isModelListener(key)) {
       patchEvent(el, key, prevValue, nextValue, parentComponent);
     }
-  } else if (key[0] === "." ? (key = key.slice(1), true) : key[0] === "^" ? (key = key.slice(1), false) : shouldSetAsProp(el, key, nextValue, isSVG)) {
-    patchDOMProp(
-      el,
-      key,
-      nextValue,
-      prevChildren,
-      parentComponent,
-      parentSuspense,
-      unmountChildren
-    );
   } else {
     if (key === "true-value") {
       el._trueValue = nextValue;
     } else if (key === "false-value") {
       el._falseValue = nextValue;
     }
-    patchAttr(el, key, nextValue, isSVG);
+    patchAttr(el, key, nextValue);
   }
 };
 
@@ -429,14 +425,14 @@ function createRenderer(options) {
   const setupRenderEffect = (instance, container) => {
     instance.update = effect(function componentEffect() {
       let proxyToUse = instance.proxy
-      let subTree = instance.subTree = instance.render.call(proxyToUse, proxyToUse)
       if (!instance.isMounted) {
+        let subTree = instance.subTree = instance.render.call(proxyToUse, proxyToUse)
         patch(null, subTree, container)
         instance.isMounted = true
-        console.log(subTree)
+        // console.log(subTree)
       } else {
         // diff 算法
-        console.log('更新逻辑')
+        // console.log('更新逻辑')
         const prevTree = instance.subTree
         const nextTree = instance.render.call(proxyToUse, proxyToUse)
         patch(prevTree, nextTree, container)
@@ -481,7 +477,7 @@ function createRenderer(options) {
       props && props.is,
       props
     );
-    if (shapeFlag & 8) {
+    if (shapeFlag & 8) {  // 文本
       hostSetElementText(el, vnode.children);
     } else if (shapeFlag & 16) {
       mountChildren(
@@ -505,8 +501,58 @@ function createRenderer(options) {
     hostInsert(el, container, anchor);
   }
 
+  const unmountChildren = (children) => {
+    for (let i = 0; i < children.length; i++) {
+      unmount(children[i]);
+    }
+  }
+
+  const patchKeyedChildren = (c1, c2, el) => {
+
+  }
+
+  // 比较两个儿子
+  const patchChildren = (n1, n2, el) => {
+    const c1 = n1.children
+    const c2 = n2.children
+    const prevShapeFlag = n1.shapeFlag
+    const shapeFlag = n2.shapeFlag
+    console.log(c1, c2, el, shapeFlag, prevShapeFlag)
+    if (shapeFlag == 9) {
+      if (prevShapeFlag == 9) {
+        unmountChildren(c1)
+      }
+      if (c2 != c1) {
+        hostSetElementText(el, c2)
+      }
+    } else {
+      if (prevShapeFlag == 17) {  // 上一次是文本  这次是元素
+        console.log('prevShapeFlag', c1, c2)
+        if (shapeFlag == 17) {  // 都是数组
+          console.log('数组')
+          patchKeyedChildren(c1, c2, el) // diff 比较
+        } else {
+          // 没有孩子
+          unmountChildren(c1)
+        }
+      } else {
+        console.log(shapeFlag, prevShapeFlag)
+        // 上一次是文本
+        if (prevShapeFlag == 9) {
+          hostSetElementText(el, '')
+        }
+        if (shapeFlag == 17) {
+          mountChildren(c2, el)
+        }
+      }
+    }
+  }
+
+
   const patchElement = (n1, n2, container) => {
     // 元素更新
+    const el = n2.el = n1.el;
+    patchChildren(n1, n2, container)
   }
   const processElement = (n1, n2, container, anchor) => {
     if (n1 == null) {
@@ -520,6 +566,7 @@ function createRenderer(options) {
         n1,
         n2,
         container,
+        anchor
       );
     }
   };
@@ -536,7 +583,20 @@ function createRenderer(options) {
       }
     }
   };
+  const isSameVNodeType = (n1, n2) => {
+    return n1.type == n2.type && n1.key == n2.key
+  }
+  const unmount = (n1) => {
+    hostRemove(n1.el)
+  }
   const patch = (n1, n2, container, anchor = null) => {
+    if (n1 && !isSameVNodeType(n1, n2)) {
+      // 渲染
+      anchor = hostNextSibling(n1.el)
+      unmount(n1)
+      console.log('anchor', anchor)
+      n1 = null // 重新渲染 n2 的内容
+    }
     const { type, shapeFlag } = n2;
     switch (type) {
       case Text:
@@ -544,10 +604,10 @@ function createRenderer(options) {
         break;
       default:
         if (shapeFlag & 1) {
-          console.log('元素')
-          processElement(n1, n2, container)
+          // console.log('元素')
+          processElement(n1, n2, container, anchor)
         } else if (shapeFlag == 4) {
-          console.log('组件')
+          // console.log('组件')
           processComponent(n1, n2, container)
         }
     }
