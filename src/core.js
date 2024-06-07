@@ -26,14 +26,23 @@ const component = {
       return state.show
         ? h('p', [
           h('li', { key: 'a' }, 'a'),
-          h('li', { key: 'b' }, 'b'),
-          h('li', { key: 'c' }, 'c')
+          h('li', { key: 'b', color: 'red' }, 'b'),
+          h('li', { key: 'c' }, 'c'),
+          h('li', { key: 'd' }, 'd'),
+          h('li', { key: 'e' }, 'e'),
+          h('li', { key: 'q' }, 'q'),
+          h('li', { key: 'f' }, 'f'),
+          h('li', { key: 'g' }, 'g')
         ])
         : h('p', {}, [
           h('li', { key: 'a' }, 'a'),
-          h('li', { key: 'b' }, 'b'),
+          h('li', { key: 'b', color: 'red' }, 'b'),
+          h('li', { key: 'e' }, 'e'),
+          h('li', { key: 'c' }, 'c'),
           h('li', { key: 'd' }, 'd'),
-          h('li', { key: 'e' }, 'e')
+          h('li', { key: 'h' }, 'h'),
+          h('li', { key: 'f' }, 'f'),
+          h('li', { key: 'g' }, 'g')
         ])
     }
   },

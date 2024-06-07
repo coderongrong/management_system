@@ -203,10 +203,10 @@ function patchEvent(el, rawName, prevValue, nextValue, instance = null) {
   // }
 }
 function patchAttr(el, key, value, isSVG, instance) {
-  console.log('2')
   if (value == null || (!!value || value === "")) {
     el.removeAttribute(key);
   } else {
+    console.log('2')
     el.setAttribute(key, isBoolean2 ? "" : value);
   }
 }
@@ -508,7 +508,88 @@ function createRenderer(options) {
   }
 
   const patchKeyedChildren = (c1, c2, el) => {
-
+    let i = 0;
+    let e1 = c1.length - 1
+    let e2 = c2.length - 1
+    // sync from start 从头开始比较 遇到不同的就停止
+    while (i <= e1 && i <= e2) {
+      const n1 = c1[i]
+      const n2 = c2[i]
+      if (isSameVNodeType(n1, n2)) {
+        patch(n1, n2, el)
+      } else {
+        break
+      }
+      i++
+    }
+    console.log(i, e1, e2)
+    while (i <= e1 && i <= e2) {
+      const n1 = c1[e1]
+      const n2 = c2[e2]
+      if (isSameVNodeType(n1, n2)) {
+        patch(n1, n2, el)
+      } else {
+        break
+      }
+      e1--
+      e2--
+    }
+    console.log(i, e1, e2)
+    if (i > e1) {  // 新的多
+      if (i <= e2) {
+        const nextPos = e2 + 1;
+        const anchor = nextPos < c2.length ? c2[nextPos].el : null;
+        while (i <= e2) {
+          patch(null, c2[i], el, anchor)
+          i++
+        }
+      }
+    } else if (i > e2) {// 老的多
+      while (i <= e1) {
+        unmount(c1[i])
+        i++;
+      }
+    } else { // 乱序比较
+      let s1 = i
+      let s2 = i
+      const keyToNewIndexMap = /* @__PURE__ */ new Map();
+      for (i = s2; i <= e2; i++) {
+        const nextChild = c2[i]
+        keyToNewIndexMap.set(nextChild.key, i);
+      }
+      console.log(keyToNewIndexMap, e2, s2)
+      const toBePatched = e2 - s2 + 1;
+      const newIndexToOldIndexMap = new Array(toBePatched).fill(0);
+      console.log(toBePatched, newIndexToOldIndexMap)
+      for (let i = s1; i <= e1; i++) {
+        const oldVnode = c1[i]
+        let newIndex = keyToNewIndexMap.get(oldVnode.key)
+        if (newIndex == void 0) {
+          unmount(oldVnode)
+        } else {
+          newIndexToOldIndexMap[newIndex - s2] = i + 1;
+          patch(oldVnode, c2[newIndex], el)
+        }
+      }
+      const increasingNewIndexSequence = getSequence(newIndexToOldIndexMap);
+      let j = increasingNewIndexSequence.length - 1;
+      console.log(increasingNewIndexSequence)
+      for (let i = toBePatched - 1; i >= 0; i--) {
+        const currentIndex = i + s2;
+        const child = c2[currentIndex]
+        const anchor = currentIndex + 1 < c2.length ? c2[currentIndex + 1].el : null;
+        if (newIndexToOldIndexMap[i] == 0) {
+          patch(null, child, el, anchor)
+        } else {
+          // 最长递增子序列 优化
+          if (i != increasingNewIndexSequence[j]) {
+            hostInsert(child.el, el, anchor)
+          } else {
+            j--
+          }
+        }
+      }
+    }
   }
 
   // 比较两个儿子
@@ -517,7 +598,7 @@ function createRenderer(options) {
     const c2 = n2.children
     const prevShapeFlag = n1.shapeFlag
     const shapeFlag = n2.shapeFlag
-    console.log(c1, c2, el, shapeFlag, prevShapeFlag)
+    // console.log(c1, c2, el, shapeFlag, prevShapeFlag)
     if (shapeFlag == 9) {
       if (prevShapeFlag == 9) {
         unmountChildren(c1)
@@ -527,7 +608,6 @@ function createRenderer(options) {
       }
     } else {
       if (prevShapeFlag == 17) {  // 上一次是文本  这次是元素
-        console.log('prevShapeFlag', c1, c2)
         if (shapeFlag == 17) {  // 都是数组
           console.log('数组')
           patchKeyedChildren(c1, c2, el) // diff 比较
@@ -552,7 +632,7 @@ function createRenderer(options) {
   const patchElement = (n1, n2, container) => {
     // 元素更新
     const el = n2.el = n1.el;
-    patchChildren(n1, n2, container)
+    patchChildren(n1, n2, el)
   }
   const processElement = (n1, n2, container, anchor) => {
     if (n1 == null) {
@@ -639,4 +719,45 @@ export function createApp(rootComponent, rootProps = null) {
     mount(container)
   }
   return app
+}
+
+function getSequence(arr) {
+  const p2 = arr.slice();
+  const result = [0];
+  let i, j, u, v, c;
+  const len = arr.length;
+  for (i = 0; i < len; i++) {
+    const arrI = arr[i];
+    if (arrI !== 0) {
+      j = result[result.length - 1];
+      if (arr[j] < arrI) {
+        p2[i] = j;
+        result.push(i);
+        continue;
+      }
+      u = 0;
+      v = result.length - 1;
+      while (u < v) {
+        c = u + v >> 1;
+        if (arr[result[c]] < arrI) {
+          u = c + 1;
+        } else {
+          v = c;
+        }
+      }
+      if (arrI < arr[result[u]]) {
+        if (u > 0) {
+          p2[i] = result[u - 1];
+        }
+        result[u] = i;
+      }
+    }
+  }
+  u = result.length;
+  v = result[u - 1];
+  while (u-- > 0) {
+    result[u] = v;
+    v = p2[v];
+  }
+  return result;
 }
